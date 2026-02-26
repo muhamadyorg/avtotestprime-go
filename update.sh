@@ -6,6 +6,7 @@ PROJECT_DIR="$SCRIPT_DIR"
 
 echo "AvtotestPrime yangilanmoqda..."
 cd "$PROJECT_DIR"
+git config --global --add safe.directory "$PROJECT_DIR" 2>/dev/null || true
 git pull origin main || git pull origin master
 
 export PATH=$PATH:/usr/local/go/bin

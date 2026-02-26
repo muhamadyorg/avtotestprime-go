@@ -23,6 +23,8 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+git config --global --add safe.directory "$PROJECT_DIR" 2>/dev/null || true
+
 if [ -f "${PROJECT_DIR}/.env" ]; then
     echo -e "${YELLOW}Mavjud .env topildi, parollar saqlanadi${NC}"
     DB_PASS=$(grep DB_PASSWORD "${PROJECT_DIR}/.env" | head -1 | cut -d'=' -f2 | tr -d '"')
