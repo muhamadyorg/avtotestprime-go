@@ -1,0 +1,46 @@
+{{define "title"}}Saqlangan savollar - AvtotestPrime{{end}}
+
+{{define "content"}}
+<div class="page-header">
+    <h1><i class="fas fa-bookmark"></i> Saqlangan savollar ({{len .Questions}})</h1>
+</div>
+
+<div class="questions-list">
+    {{if .Questions}}
+    {{range .Questions}}
+    {{$q := .}}
+    <div class="question-card">
+        <div class="question-card-content">
+            <div class="question-info">
+                <div class="question-number">#{{.Number}}</div>
+                <div class="question-text">{{.Text}}</div>
+            </div>
+            {{if hasImage .Image}}
+            <div class="question-thumb" onclick="openImageModal('{{imageURL .Image}}')">
+                <img src="{{imageURL .Image}}" alt="Savol rasmi">
+            </div>
+            {{end}}
+        </div>
+        <div class="question-variants">
+            {{range .VariantsList}}
+            <div class="variant {{if eq $q.CorrectAnswer .Letter}}variant-correct{{end}}">
+                <span class="variant-letter">{{.Letter}}</span> {{.Text}}
+            </div>
+            {{end}}
+        </div>
+        <div class="question-actions">
+            <a href="/bookmark/toggle/{{$q.ID}}/" class="btn btn-sm btn-warning" onclick="event.preventDefault(); toggleBookmark(this, {{$q.ID}});">
+                <i class="fas fa-bookmark"></i> Olib tashlash
+            </a>
+        </div>
+    </div>
+    {{end}}
+    {{else}}
+    <div class="empty-state">
+        <i class="fas fa-bookmark"></i>
+        <p>Saqlangan savollar yo'q</p>
+        <a href="/questions/" class="btn btn-primary">Savollarni ko'rish</a>
+    </div>
+    {{end}}
+</div>
+{{end}}

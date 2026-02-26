@@ -1,0 +1,35 @@
+{{define "title"}}Savol #{{.QuestionData.Number}} - AvtotestPrime{{end}}
+
+{{define "content"}}
+<div class="page-header">
+    <h1>Savol #{{.QuestionData.Number}}</h1>
+    <a href="/questions/" class="btn btn-outline">
+        <i class="fas fa-arrow-left"></i> Orqaga
+    </a>
+</div>
+
+<div class="question-detail">
+    {{if hasImage .QuestionData.Image}}
+    <div class="question-detail-image" onclick="openImageModal('{{imageURL .QuestionData.Image}}')">
+        <img src="{{imageURL .QuestionData.Image}}" alt="Savol rasmi">
+        <div class="image-hint"><i class="fas fa-expand"></i> Kattalashtirish</div>
+    </div>
+    {{end}}
+    <div class="question-detail-content">
+        <p class="question-text-large">{{.QuestionData.Text}}</p>
+        <div class="variants-list">
+            {{range .QuestionData.VariantsList}}
+            <div class="variant-detail {{if eq $.QuestionData.CorrectAnswer .Letter}}variant-correct{{end}}">
+                <span class="variant-letter">{{.Letter}}</span> {{.Text}}
+            </div>
+            {{end}}
+        </div>
+    </div>
+    <div class="question-actions">
+        <a href="/bookmark/toggle/{{.QuestionData.ID}}/" class="btn {{if .IsBookmarked}}btn-warning{{else}}btn-outline{{end}}">
+            <i class="fas fa-bookmark"></i>
+            {{if .IsBookmarked}}Saqlangan{{else}}Saqlash{{end}}
+        </a>
+    </div>
+</div>
+{{end}}

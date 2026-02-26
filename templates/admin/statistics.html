@@ -1,0 +1,40 @@
+{{define "title"}}Statistika - AvtotestPrime{{end}}
+
+{{define "content"}}
+<div class="page-header">
+    <h1><i class="fas fa-chart-bar"></i> Foydalanuvchilar statistikasi</h1>
+</div>
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Foydalanuvchi</th>
+                <th>Testlar soni</th>
+                <th>O'rtacha ball</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{if .UserStats}}
+            {{range $i, $item := .UserStats}}
+            <tr>
+                <td>{{add $i 1}}</td>
+                <td>{{$item.User.Username}}</td>
+                <td>{{$item.TotalTests}}</td>
+                <td>
+                    <span class="score-badge {{scoreClass $item.AvgScore}}">
+                        {{$item.AvgScore}}%
+                    </span>
+                </td>
+            </tr>
+            {{end}}
+            {{else}}
+            <tr>
+                <td colspan="4" class="text-center">Ma'lumot topilmadi</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</div>
+{{end}}

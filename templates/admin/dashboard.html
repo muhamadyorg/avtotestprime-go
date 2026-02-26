@@ -1,0 +1,73 @@
+{{define "title"}}Admin Panel - AvtotestPrime{{end}}
+
+{{define "content"}}
+<div class="page-header">
+    <h1><i class="fas fa-tachometer-alt"></i> Boshqaruv paneli</h1>
+</div>
+
+<div class="stats-grid">
+    <a href="/admin-panel/questions/" class="stat-card">
+        <div class="stat-icon"><i class="fas fa-question-circle"></i></div>
+        <div class="stat-number">{{.TotalQuestions}}</div>
+        <div class="stat-label">Savollar</div>
+    </a>
+    <a href="/admin-panel/users/" class="stat-card">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <div class="stat-number">{{.TotalUsers}}</div>
+        <div class="stat-label">Foydalanuvchilar</div>
+    </a>
+    <a href="/admin-panel/statistics/" class="stat-card">
+        <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+        <div class="stat-number">{{.TotalTests}}</div>
+        <div class="stat-label">Jami testlar</div>
+    </a>
+</div>
+
+<div class="admin-quick-actions">
+    <h2>Tezkor harakatlar</h2>
+    <div class="action-grid">
+        <a href="/admin-panel/questions/add/" class="action-card">
+            <i class="fas fa-plus-circle"></i>
+            <span>Savol qo'shish</span>
+        </a>
+        <a href="/admin-panel/users/add/" class="action-card">
+            <i class="fas fa-user-plus"></i>
+            <span>Foydalanuvchi qo'shish</span>
+        </a>
+        <a href="/admin-panel/statistics/" class="action-card">
+            <i class="fas fa-chart-line"></i>
+            <span>Statistikani ko'rish</span>
+        </a>
+    </div>
+</div>
+
+{{if .RecentTests}}
+<h2 class="section-title">Oxirgi testlar</h2>
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Foydalanuvchi</th>
+                <th>Savollar</th>
+                <th>Ball</th>
+                <th>Sana</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .RecentTests}}
+            <tr>
+                <td>{{.Username}}</td>
+                <td>{{.TotalQuestions}}</td>
+                <td>
+                    <span class="score-badge {{scoreClass .ScorePercent}}">
+                        {{.ScorePercent}}%
+                    </span>
+                </td>
+                <td>{{formatDate .CreatedAt "d.m.Y H:i"}}</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</div>
+{{end}}
+{{end}}

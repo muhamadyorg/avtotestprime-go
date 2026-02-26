@@ -1,0 +1,73 @@
+{{define "title"}}Statistika - AvtotestPrime{{end}}
+
+{{define "content"}}
+<div class="page-header">
+    <h1><i class="fas fa-chart-bar"></i> Statistika</h1>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+        <div class="stat-number">{{.TotalTests}}</div>
+        <div class="stat-label">Jami testlar</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+        <div class="stat-number">{{.AvgScore}}%</div>
+        <div class="stat-label">O'rtacha ball</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+        <div class="stat-number">{{.BestScore}}%</div>
+        <div class="stat-label">Eng yaxshi ball</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-check"></i></div>
+        <div class="stat-number">{{.TotalCorrect}}</div>
+        <div class="stat-label">To'g'ri javoblar</div>
+    </div>
+</div>
+
+<h2 class="section-title">Oxirgi testlar</h2>
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Sana</th>
+                <th>Savollar</th>
+                <th>To'g'ri</th>
+                <th>Noto'g'ri</th>
+                <th>Ball</th>
+                <th>Vaqt</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{if .RecentSessions}}
+            {{range $i, $s := .RecentSessions}}
+            <tr>
+                <td>{{add $i 1}}</td>
+                <td>{{formatDate $s.CreatedAt "d.m.Y H:i"}}</td>
+                <td>{{$s.TotalQuestions}}</td>
+                <td class="text-success">{{$s.CorrectAnswers}}</td>
+                <td class="text-danger">{{$s.WrongAnswers}}</td>
+                <td>
+                    <span class="score-badge {{scoreClass $s.ScorePercent}}">
+                        {{$s.ScorePercent}}%
+                    </span>
+                </td>
+                <td>{{$s.TimeSpent}}s</td>
+                <td><a href="/test/{{$s.ID}}/result/" class="btn btn-sm btn-outline">Ko'rish</a></td>
+            </tr>
+            {{end}}
+            {{else}}
+            <tr>
+                <td colspan="8" class="text-center">Testlar topilmadi</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</div>
+{{end}}

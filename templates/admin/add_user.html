@@ -1,0 +1,33 @@
+{{define "title"}}Foydalanuvchi qo'shish - AvtotestPrime{{end}}
+
+{{define "content"}}
+<div class="page-header">
+    <h1><i class="fas fa-user-plus"></i> Foydalanuvchi qo'shish</h1>
+    <a href="/admin-panel/users/" class="btn btn-outline">
+        <i class="fas fa-arrow-left"></i> Orqaga
+    </a>
+</div>
+
+<div class="form-card">
+    {{if .Error}}
+    <div class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i> {{.Error}}
+    </div>
+    {{end}}
+
+    <form method="post" action="/admin-panel/users/add/">
+        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+        <div class="form-group">
+            <label for="username"><i class="fas fa-user"></i> Login:</label>
+            <input type="text" id="username" name="username" required placeholder="Loginni kiriting">
+        </div>
+        <div class="form-group">
+            <label for="password"><i class="fas fa-lock"></i> Parol:</label>
+            <input type="password" id="password" name="password" required placeholder="Parolni kiriting">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">
+            <i class="fas fa-save"></i> Saqlash
+        </button>
+    </form>
+</div>
+{{end}}

@@ -1,0 +1,71 @@
+{{define "title"}}Test natijasi - AvtotestPrime{{end}}
+
+{{define "content"}}
+<div class="page-header">
+    <h1><i class="fas fa-poll"></i> Test natijasi</h1>
+</div>
+
+<div class="result-summary">
+    <div class="result-score {{scoreClass .Session.ScorePercent}}">
+        {{.Session.ScorePercent}}%
+    </div>
+    <div class="result-details">
+        <div class="result-item result-correct">
+            <i class="fas fa-check-circle"></i>
+            <span>To'g'ri: {{.Session.CorrectAnswers}}</span>
+        </div>
+        <div class="result-item result-wrong">
+            <i class="fas fa-times-circle"></i>
+            <span>Noto'g'ri: {{.Session.WrongAnswers}}</span>
+        </div>
+        <div class="result-item">
+            <i class="fas fa-clock"></i>
+            <span>Vaqt: {{.Session.TimeSpent}} soniya</span>
+        </div>
+        <div class="result-item">
+            <i class="fas fa-list"></i>
+            <span>Jami: {{.Session.TotalQuestions}} savol</span>
+        </div>
+    </div>
+</div>
+
+<h2 class="section-title">Batafsil natijalar</h2>
+
+<div class="result-answers">
+    {{range $i, $answer := .Answers}}
+    <div class="result-answer-card {{if $answer.IsCorrect}}answer-correct{{else}}answer-wrong{{end}}">
+        <div class="result-answer-header">
+            <span class="result-answer-num">#{{add $i 1}}</span>
+            {{if $answer.IsCorrect}}
+            <span class="result-badge badge-correct"><i class="fas fa-check"></i> To'g'ri</span>
+            {{else}}
+            <span class="result-badge badge-wrong"><i class="fas fa-times"></i> Noto'g'ri</span>
+            {{end}}
+        </div>
+        <p class="result-answer-text">{{$answer.Question.Text}}</p>
+        {{if hasImage $answer.Question.Image}}
+        <div class="result-answer-image" onclick="openImageModal('{{imageURL $answer.Question.Image}}')">
+            <img src="{{imageURL $answer.Question.Image}}" alt="Savol rasmi">
+        </div>
+        {{end}}
+        <div class="result-variants">
+            {{range $answer.Question.VariantsList}}
+            <div class="variant {{if eq $answer.Question.CorrectAnswer .Letter}}variant-correct{{end}} {{if and (eq $answer.SelectedAnswer .Letter) (not $answer.IsCorrect)}}variant-wrong{{end}}">
+                <span class="variant-letter">{{.Letter}}</span> {{.Text}}
+                {{if eq $answer.SelectedAnswer .Letter}}<i class="fas fa-hand-pointer"></i>{{end}}
+            </div>
+            {{end}}
+        </div>
+    </div>
+    {{end}}
+</div>
+
+<div class="result-actions">
+    <a href="/test/start/" class="btn btn-primary">
+        <i class="fas fa-redo"></i> Qayta test
+    </a>
+    <a href="/dashboard/" class="btn btn-outline">
+        <i class="fas fa-home"></i> Bosh sahifa
+    </a>
+</div>
+{{end}}

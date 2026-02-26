@@ -1,0 +1,53 @@
+{{define "title"}}Bosh sahifa - AvtotestPrime{{end}}
+
+{{define "content"}}
+<div class="page-header">
+    <h1>Xush kelibsiz, {{.User.Username}}!</h1>
+    <p>AvtotestPrime - Avtotest savollarini o'rganing</p>
+</div>
+
+<div class="stats-grid">
+    <a href="/questions/" class="stat-card">
+        <div class="stat-icon"><i class="fas fa-list"></i></div>
+        <div class="stat-number">{{.TotalQuestions}}</div>
+        <div class="stat-label">Jami savollar</div>
+    </a>
+    <a href="/bookmarks/" class="stat-card">
+        <div class="stat-icon"><i class="fas fa-bookmark"></i></div>
+        <div class="stat-number">{{.BookmarkCount}}</div>
+        <div class="stat-label">Saqlangan</div>
+    </a>
+    <a href="/statistics/" class="stat-card">
+        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+        <div class="stat-number">{{.TestCount}}</div>
+        <div class="stat-label">Testlar</div>
+    </a>
+    <a href="/statistics/" class="stat-card">
+        <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+        <div class="stat-number">{{.AvgScore}}%</div>
+        <div class="stat-label">O'rtacha ball</div>
+    </a>
+</div>
+
+<div class="quick-actions">
+    <h2>Tezkor harakatlar</h2>
+    <div class="action-grid">
+        <a href="/questions/" class="action-card">
+            <i class="fas fa-book-open"></i>
+            <span>Barcha savollar</span>
+        </a>
+        <a href="/test/start/" class="action-card">
+            <i class="fas fa-play-circle"></i>
+            <span>Test boshlash</span>
+        </a>
+        <a href="/search/" class="action-card">
+            <i class="fas fa-search"></i>
+            <span>Savol qidirish</span>
+        </a>
+        <a href="/bookmarks/" class="action-card">
+            <i class="fas fa-star"></i>
+            <span>Saqlangan savollar</span>
+        </a>
+    </div>
+</div>
+{{end}}

@@ -1,0 +1,81 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{block "title" .}}AvtotestPrime{{end}}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    {{if .IsAuthenticated}}
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-car"></i> AvtotestPrime
+        </div>
+        <button class="nav-toggle" onclick="toggleNav()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links" id="navLinks">
+            {{if .IsStaff}}
+            <a href="/admin-panel/" class="{{if eq .CurrentPage "admin_dashboard"}}active{{end}}">
+                <i class="fas fa-tachometer-alt"></i> Boshqaruv
+            </a>
+            <a href="/admin-panel/questions/" class="{{if strContains .CurrentPage "admin_question"}}active{{end}}">
+                <i class="fas fa-list"></i> Savollar
+            </a>
+            <a href="/admin-panel/users/" class="{{if strContains .CurrentPage "admin_user"}}active{{end}}">
+                <i class="fas fa-users"></i> Foydalanuvchilar
+            </a>
+            <a href="/admin-panel/statistics/" class="{{if eq .CurrentPage "admin_statistics"}}active{{end}}">
+                <i class="fas fa-chart-bar"></i> Statistika
+            </a>
+            <a href="/profile/" class="{{if eq .CurrentPage "profile"}}active{{end}}">
+                <i class="fas fa-user-cog"></i> Profil
+            </a>
+            {{else}}
+            <a href="/dashboard/" class="{{if eq .CurrentPage "dashboard"}}active{{end}}">
+                <i class="fas fa-home"></i> Bosh sahifa
+            </a>
+            <a href="/questions/" class="{{if eq .CurrentPage "all_questions"}}active{{end}}">
+                <i class="fas fa-list"></i> Savollar
+            </a>
+            <a href="/search/" class="{{if eq .CurrentPage "search_questions"}}active{{end}}">
+                <i class="fas fa-search"></i> Qidirish
+            </a>
+            <a href="/test/start/" class="{{if eq .CurrentPage "start_test"}}active{{end}}">
+                <i class="fas fa-play"></i> Test
+            </a>
+            <a href="/bookmarks/" class="{{if eq .CurrentPage "bookmarks"}}active{{end}}">
+                <i class="fas fa-bookmark"></i> Saqlangan
+            </a>
+            <a href="/statistics/" class="{{if eq .CurrentPage "statistics"}}active{{end}}">
+                <i class="fas fa-chart-bar"></i> Statistika
+            </a>
+            <a href="/profile/" class="{{if eq .CurrentPage "profile"}}active{{end}}">
+                <i class="fas fa-user"></i> Profil
+            </a>
+            {{end}}
+            <a href="/logout/" class="nav-logout">
+                <i class="fas fa-sign-out-alt"></i> Chiqish
+            </a>
+        </div>
+    </nav>
+    {{end}}
+
+    <main class="{{if .IsAuthenticated}}main-content{{else}}main-full{{end}}">
+        {{block "content" .}}{{end}}
+    </main>
+
+    <div class="image-modal" id="imageModal" onclick="closeImageModal()">
+        <span class="modal-close">&times;</span>
+        <img id="modalImage" src="" alt="">
+    </div>
+
+    <script src="/static/js/main.js"></script>
+    {{block "extra_js" .}}{{end}}
+</body>
+</html>
+{{end}}

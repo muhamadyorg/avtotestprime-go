@@ -1,0 +1,76 @@
+{{define "title"}}Test boshlash - AvtotestPrime{{end}}
+
+{{define "content"}}
+<div class="page-header">
+    <h1><i class="fas fa-play-circle"></i> Test boshlash</h1>
+</div>
+
+<div class="test-setup">
+    <div class="test-setup-card">
+        <h2>Tasodifiy test</h2>
+        <p>Savollar tasodifiy tartibda tanlanadi. Javob tanlaganingizda darhol to'g'ri yoki noto'g'ri ekani ko'rsatiladi.</p>
+
+        <div class="test-info">
+            <div class="test-info-item">
+                <i class="fas fa-database"></i>
+                <span>Mavjud savollar: <strong>{{.TotalAvailable}}</strong></span>
+            </div>
+            <div class="test-info-item">
+                <i class="fas fa-clock"></i>
+                <span>Vaqt: har bir savol uchun <strong>1 daqiqa</strong></span>
+            </div>
+        </div>
+
+        {{if gt .TotalAvailable 0}}
+        <div class="test-preset-buttons">
+            <p class="preset-label">Savollar sonini tanlang:</p>
+            <div class="preset-grid">
+                {{if ge .TotalAvailable 10}}
+                <form method="post" action="/test/start/">
+                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                    <input type="hidden" name="num_questions" value="10">
+                    <button type="submit" class="btn btn-preset">
+                        <span class="preset-num">10</span>
+                        <span class="preset-text">savol</span>
+                    </button>
+                </form>
+                {{end}}
+                {{if ge .TotalAvailable 20}}
+                <form method="post" action="/test/start/">
+                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                    <input type="hidden" name="num_questions" value="20">
+                    <button type="submit" class="btn btn-preset">
+                        <span class="preset-num">20</span>
+                        <span class="preset-text">savol</span>
+                    </button>
+                </form>
+                {{end}}
+                {{if ge .TotalAvailable 50}}
+                <form method="post" action="/test/start/">
+                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                    <input type="hidden" name="num_questions" value="50">
+                    <button type="submit" class="btn btn-preset">
+                        <span class="preset-num">50</span>
+                        <span class="preset-text">savol</span>
+                    </button>
+                </form>
+                {{end}}
+                <form method="post" action="/test/start/">
+                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                    <input type="hidden" name="num_questions" value="{{.TotalAvailable}}">
+                    <button type="submit" class="btn btn-preset btn-preset-all">
+                        <span class="preset-num">{{.TotalAvailable}}</span>
+                        <span class="preset-text">Hammasi</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        {{else}}
+        <div class="empty-state">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Savollar hali qo'shilmagan</p>
+        </div>
+        {{end}}
+    </div>
+</div>
+{{end}}

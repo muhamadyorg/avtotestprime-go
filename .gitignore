@@ -1,0 +1,13 @@
+avtotestprime-go
+*.exe
+*.log
+.env
+media/questions/*
+!media/questions/.gitkeep
+.local/
+.config/
+.cache/
+.upm/
+.replit
+replit.nix
+/tmp/
