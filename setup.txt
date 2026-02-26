@@ -1,0 +1,197 @@
+================================================================
+  AvtotestPrime Go - VPS ga Deploy Qilish Yo'riqnomasi
+  avtotestprime.uz uchun to'liq sozlash
+================================================================
+
+TALABLAR:
+- Ubuntu 20.04+ yoki Debian 11+ VPS
+- Domen: avtotestprime.uz (DNS A record VPS IP ga yo'naltirilgan)
+- aaPanel yoki oddiy Nginx o'rnatilgan
+- Minimal: 1 GB RAM, 10 GB disk
+
+================================================================
+  1-QADAM: VPS GA SSH ORQALI ULANISH
+================================================================
+
+ssh root@sizning_vps_ip
+
+================================================================
+  2-QADAM: ESKI DJANGO VERSIYASINI TO'XTATISH (agar mavjud bo'lsa)
+================================================================
+
+systemctl stop avtotestprime 2>/dev/null
+systemctl disable avtotestprime 2>/dev/null
+
+================================================================
+  3-QADAM: LOYIHANI GITHUB DAN YUKLAB OLISH
+================================================================
+
+# aaPanel ishlatayotgan bo'lsangiz:
+cd /www/wwwroot/avtotestprime.uz
+
+# Agar papka mavjud bo'lsa, avval tozalang:
+rm -rf /www/wwwroot/avtotestprime.uz/*
+rm -rf /www/wwwroot/avtotestprime.uz/.* 2>/dev/null
+
+# GitHub dan klonlash:
+git clone https://github.com/muhamadyorg/avtotestprime-go.git /www/wwwroot/avtotestprime.uz
+
+# Agar aaPanel ishlatmasangiz:
+# mkdir -p /var/www/avtotestprime.uz
+# git clone https://github.com/muhamadyorg/avtotestprime-go.git /var/www/avtotestprime.uz
+
+================================================================
+  4-QADAM: AVTOMATIK DEPLOY (1 buyruq bilan hammasi)
+================================================================
+
+cd /www/wwwroot/avtotestprime.uz
+sudo bash deploy.sh
+
+# Deploy script avtomatik ravishda:
+# - Go dasturiy ta'minotini o'rnatadi
+# - PostgreSQL bazasini yaratadi va sozlaydi
+# - .env faylini yaratadi (parollar, secretlar)
+# - Go dasturni kompilatsiya qiladi
+# - Systemd xizmatini sozlaydi (avtomatik ishga tushish)
+# - Nginx konfiguratsiyasini yaratadi
+# - Hammasi tayyor bo'lgandan keyin tekshiradi
+
+# Muvaffaqiyatli bo'lsa, quyidagilar ko'rinadi:
+#   Sayt:  http://avtotestprime.uz
+#   Admin: admin / admin
+#   User:  user / user
+
+================================================================
+  5-QADAM: SSL SERTIFIKAT O'RNATISH (HTTPS)
+================================================================
+
+# Agar aaPanel ishlatayotgan bo'lsangiz:
+# aaPanel > Website > avtotestprime.uz > SSL > Let's Encrypt > Apply
+
+# Agar oddiy Nginx ishlatayotgan bo'lsangiz:
+apt install -y certbot python3-certbot-nginx
+certbot --nginx -d avtotestprime.uz -d www.avtotestprime.uz
+
+================================================================
+  6-QADAM: TEKSHIRISH
+================================================================
+
+# Brauzerda oching:
+# https://avtotestprime.uz
+
+# Admin panel:
+# https://avtotestprime.uz/login/
+# Login: admin  Parol: admin
+
+# Server holatini tekshirish:
+systemctl status avtotestprime
+
+# Loglarni ko'rish:
+journalctl -u avtotestprime -f
+
+# Diagnostika (muammo bo'lsa):
+cd /www/wwwroot/avtotestprime.uz
+sudo bash diagnose.sh
+
+================================================================
+  KEYINGI YANGILASHLAR
+================================================================
+
+# Kodni yangilab, qayta deploy qilish:
+cd /www/wwwroot/avtotestprime.uz
+git pull origin main
+sudo bash update.sh
+
+# update.sh avtomatik:
+# - Yangi kodni GitHub dan tortadi
+# - Go dasturni qayta kompilatsiya qiladi
+# - Xizmatni qayta ishga tushiradi
+
+================================================================
+  FOYDALI BUYRUQLAR
+================================================================
+
+# Serverni qayta ishga tushirish:
+systemctl restart avtotestprime
+
+# Serverni to'xtatish:
+systemctl stop avtotestprime
+
+# Serverni ishga tushirish:
+systemctl start avtotestprime
+
+# Holat:
+systemctl status avtotestprime
+
+# Loglar (jonli):
+journalctl -u avtotestprime -f
+
+# Loglar (oxirgi 50 qator):
+journalctl -u avtotestprime --no-pager -n 50
+
+# Nginx qayta yuklash:
+nginx -s reload
+# yoki aaPanel uchun:
+/www/server/nginx/sbin/nginx -s reload
+
+# PostgreSQL bilan ishlash:
+sudo -u postgres psql -d avtotestprime
+
+================================================================
+  MUAMMOLAR VA YECHIMLAR
+================================================================
+
+MUAMMO: "Sayt ochilmayapti"
+YECHIM:
+  1. systemctl status avtotestprime   (server ishlayaptimi?)
+  2. journalctl -u avtotestprime -f   (xatolik loglarini ko'ring)
+  3. sudo bash diagnose.sh            (to'liq diagnostika)
+
+MUAMMO: "502 Bad Gateway"
+YECHIM:
+  Nginx ishlayapti lekin Go server to'xtagan.
+  systemctl restart avtotestprime
+
+MUAMMO: "Baza ulanishi xato"
+YECHIM:
+  1. systemctl status postgresql  (PostgreSQL ishlayaptimi?)
+  2. systemctl restart postgresql
+  3. .env fayldagi DATABASE_URL ni tekshiring
+
+MUAMMO: "Permission denied"
+YECHIM:
+  chown -R www:www /www/wwwroot/avtotestprime.uz
+  # yoki:
+  chown -R www-data:www-data /www/wwwroot/avtotestprime.uz
+
+MUAMMO: "Go topilmadi (go: command not found)"
+YECHIM:
+  export PATH=$PATH:/usr/local/go/bin
+  # Doimiy qilish uchun:
+  echo 'export PATH=$PATH:/usr/local/go/bin' >> /etc/profile
+  source /etc/profile
+
+================================================================
+  XAVFSIZLIK SOZLAMALARI
+================================================================
+
+# Deploy dan keyin admin parolini o'zgartiring!
+# 1. https://avtotestprime.uz/login/ ga kiring (admin/admin)
+# 2. Profil sahifasiga o'ting
+# 3. Yangi kuchli parol qo'ying
+
+# .env faylidagi SESSION_SECRET deploy.sh tomonidan
+# avtomatik generatsiya qilinadi - o'zgartirmang.
+
+================================================================
+  QISQACHA (TL;DR)
+================================================================
+
+ssh root@vps_ip
+cd /www/wwwroot/avtotestprime.uz
+rm -rf * .* 2>/dev/null
+git clone https://github.com/muhamadyorg/avtotestprime-go.git .
+sudo bash deploy.sh
+# Tayyor! https://avtotestprime.uz ochiladi
+
+================================================================

@@ -8,11 +8,10 @@ echo "AvtotestPrime yangilanmoqda..."
 cd "$PROJECT_DIR"
 git pull origin main || git pull origin master
 
-source venv/bin/activate
-
-pip install -r requirements.txt
-python manage.py migrate --noinput
-python manage.py collectstatic --noinput
+export PATH=$PATH:/usr/local/go/bin
+echo "Go dastur qayta kompilatsiya qilinmoqda..."
+go build -o avtotestprime-server .
+chmod +x avtotestprime-server
 
 WEB_USER="www"
 if ! id -u www > /dev/null 2>&1; then
