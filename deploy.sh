@@ -121,7 +121,7 @@ echo -e "${GREEN}.env fayli yaratildi!${NC}"
 echo -e "${YELLOW}[4/7] Go dasturni kompilatsiya qilish...${NC}"
 cd "$PROJECT_DIR"
 export PATH=$PATH:/usr/local/go/bin
-go build -o avtotestprime-server .
+go build -buildvcs=false -o avtotestprime-server .
 chmod +x avtotestprime-server
 mkdir -p media/questions
 echo -e "${GREEN}Dastur kompilatsiya qilindi!${NC}"

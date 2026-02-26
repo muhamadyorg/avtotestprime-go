@@ -10,7 +10,7 @@ git pull origin main || git pull origin master
 
 export PATH=$PATH:/usr/local/go/bin
 echo "Go dastur qayta kompilatsiya qilinmoqda..."
-go build -o avtotestprime-server .
+go build -buildvcs=false -o avtotestprime-server .
 chmod +x avtotestprime-server
 
 WEB_USER="www"
